@@ -1,5 +1,11 @@
+import { IfcAPI } from "web-ifc";
 
-async function logStructureChildren(api: any, modelId: any, structure: any, prefix = '') {
+export async function logAll(api: IfcAPI, modelId: number) {
+    const structure = await api.properties.getSpatialStructure(modelId);
+    await logStructureChildren(api, modelId, structure);
+}
+
+async function logStructureChildren(api: IfcAPI, modelId: number, structure: any, prefix = '') {
     const elementId = structure.expressID;
     const base = await getElement(api, modelId, elementId);
     console.log('\n\n\nPARENT:')
@@ -20,11 +26,6 @@ async function logStructureChildren(api: any, modelId: any, structure: any, pref
     }
 }
 
-export async function logAll(api: { properties: { getSpatialStructure: (arg0: any) => any; }; }, modelId: any) {
-    const structure = await api.properties.getSpatialStructure(modelId);
-    await logStructureChildren(api, modelId, structure);
-}
-
-async function getElement(api: { properties: { getItemProperties: (arg0: any, arg1: any) => any; }; }, modelId: any, elementId: any) {
+async function getElement(api: IfcAPI, modelId: number, elementId: number) {
     return await api.properties.getItemProperties(modelId, elementId);
 }
