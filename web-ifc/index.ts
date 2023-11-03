@@ -1,11 +1,12 @@
 import { promises as fsPromises } from 'fs';
 import * as WebIFC from 'web-ifc';
-
+import { logAll } from './utils';
 
 async function run() {
     const ifcData = await fsPromises.readFile('../example-files/UT_SpatialStructure_4.ifc');
+    // const ifcData = await fsPromises.readFile('../example-files/UT_Alignment_12d_11.ifc');
 
-        // initialize the API
+    // initialize the API
     const ifcApi = new WebIFC.IfcAPI();
 
     // initialize the library
@@ -19,7 +20,7 @@ async function run() {
         throw new Error('Failed to load IFC file.')
     }
 
-    console.log(ifcApi.GetIfcEntityList(modelID))
+    await logAll(ifcApi, modelID);
 
     // the model is now loaded! use modelID to fetch geometry or properties
     // checkout examples/usage for some details on how to read/write IFC
